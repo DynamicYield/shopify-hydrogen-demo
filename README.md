@@ -1,42 +1,14 @@
-# Hydrogen template: Demo Store
+# Hydrogen Demo store integrating Dynamic Yield
 
-Hydrogen is Shopify’s stack for headless commerce. Hydrogen is designed to dovetail with [Remix](https://remix.run/), Shopify’s full stack web framework. This template contains a **full-featured setup** of components, queries and tooling to get started with Hydrogen.
+This demo store is a clone of the `demo-store` template [provided by Shopify](https://shopify.dev/docs/custom-storefronts/hydrogen/getting-started/quickstart) with examples of how to integrate the Dynamic Yield APIs.
 
-[Check out Hydrogen docs](https://shopify.dev/custom-storefronts/hydrogen)
-[Get familiar with Remix](https://remix.run/docs/en/v1)
+## Requirements
 
-## What's included
-
-- Remix
-- Hydrogen
-- Oxygen
-- Shopify CLI
-- ESLint
-- Prettier
-- GraphQL generator
-- TypeScript and JavaScript flavors
-- Tailwind CSS (via PostCSS)
-- Full-featured setup of components and routes
-
-## Getting started
-
-**Requirements:**
-
+- A Dynamic Yield account
+- [Dynamic Yield v2](https://apps.shopify.com/dynamic-yield-v2) Shopify app
 - Node.js version 16.14.0 or higher
 
-```bash
-npm create @shopify/hydrogen@latest -- --template demo-store
-```
-
-Remember to update `.env` with your shop's domain and Storefront API token!
-
-## Building for production
-
-```bash
-npm run build
-```
-
-## Local development
+## Start the demo store locally
 
 ```bash
 npm run dev
