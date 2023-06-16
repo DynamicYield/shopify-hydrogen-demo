@@ -9,9 +9,11 @@ import {getHeroPlaceholder} from '~/lib/placeholders';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
 
+import {choose} from '~/dyapi';
+
 export const headers = routeHeaders;
 
-export async function loader({params, context}) {
+export async function loader({params, request, context}) {
   const {language, country} = context.storefront.i18n;
 
   if (
@@ -28,50 +30,54 @@ export async function loader({params, context}) {
   });
 
   const seo = seoPayload.home();
+  
+  const pageContext = {type: 'HOMEPAGE'};
+  const apiResponse = await choose(request, context, pageContext, ['HP Hero']);
 
   return defer({
-    shop,
-    primaryHero: hero,
-    // These different queries are separated to illustrate how 3rd party content
-    // fetching can be optimized for both above and below the fold.
-    featuredProducts: context.storefront.query(
-      HOMEPAGE_FEATURED_PRODUCTS_QUERY,
-      {
+      shop,
+      primaryHero: apiResponse['HP Hero'] || hero,
+      // These different queries are separated to illustrate how 3rd party content
+      // fetching can be optimized for both above and below the fold.
+      featuredProducts: context.storefront.query(
+        HOMEPAGE_FEATURED_PRODUCTS_QUERY,
+        {
+          variables: {
+            /**
+             * Country and language properties are automatically injected
+             * into all queries. Passing them is unnecessary unless you
+             * want to override them from the following default:
+             */
+            country,
+            language,
+          },
+        },
+      ),
+      secondaryHero: context.storefront.query(COLLECTION_HERO_QUERY, {
         variables: {
-          /**
-           * Country and language properties are automatically injected
-           * into all queries. Passing them is unnecessary unless you
-           * want to override them from the following default:
-           */
+          handle: 'backcountry',
           country,
           language,
         },
-      },
-    ),
-    secondaryHero: context.storefront.query(COLLECTION_HERO_QUERY, {
-      variables: {
-        handle: 'backcountry',
-        country,
-        language,
-      },
-    }),
+      }),
     featuredCollections: context.storefront.query(FEATURED_COLLECTIONS_QUERY, {
-      variables: {
-        country,
-        language,
-      },
+          variables: {
+            country,
+            language,
+          },
     }),
-    tertiaryHero: context.storefront.query(COLLECTION_HERO_QUERY, {
-      variables: {
-        handle: 'winter-2022',
-        country,
-        language,
+      tertiaryHero: context.storefront.query(COLLECTION_HERO_QUERY, {
+        variables: {
+          handle: 'winter-2022',
+          country,
+          language,
+        },
+      }),
+      analytics: {
+        pageType: AnalyticsPageType.home,
       },
-    }),
-    analytics: {
-      pageType: AnalyticsPageType.home,
-    },
-    seo,
+      pageContext: pageContext,
+      seo,
   });
 }
 

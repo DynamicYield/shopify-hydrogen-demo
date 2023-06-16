@@ -31,6 +31,8 @@ import {seoPayload} from '~/lib/seo.server';
 import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
 import {routeHeaders} from '~/data/cache';
 
+import {choose} from '~/dyapi';
+
 export const headers = routeHeaders;
 
 export async function loader({params, request, context}) {
@@ -56,6 +58,9 @@ export async function loader({params, request, context}) {
   if (!product?.id) {
     throw new Response('product', {status: 404});
   }
+  
+  const pageContext = {type: 'PRODUCT', data: [product.id]};
+  const apiResponse = await choose(request, context, pageContext, []);
 
   const recommended = getRecommendedProducts(context.storefront, product.id);
   const firstVariant = product.variants.nodes[0];
@@ -77,17 +82,18 @@ export async function loader({params, request, context}) {
   });
 
   return defer({
-    product,
-    shop,
-    storeDomain: shop.primaryDomain.url,
-    recommended,
-    analytics: {
-      pageType: AnalyticsPageType.product,
-      resourceId: product.id,
-      products: [productAnalytics],
-      totalValue: parseFloat(selectedVariant.price.amount),
-    },
-    seo,
+      product,
+      shop,
+      storeDomain: shop.primaryDomain.url,
+      recommended,
+      analytics: {
+        pageType: AnalyticsPageType.product,
+        resourceId: product.id,
+        products: [productAnalytics],
+        totalValue: parseFloat(selectedVariant.price.amount),
+      },
+      pageContext: pageContext,
+      seo,
   });
 }
 

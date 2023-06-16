@@ -12,6 +12,8 @@ import {getImageLoadingPriority} from '~/lib/const';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
 
+import {choose} from '~/dyapi';
+
 const PAGE_BY = 8;
 
 export const headers = routeHeaders;
@@ -32,24 +34,28 @@ export async function loader({request, context: {storefront}}) {
   const seo = seoPayload.collection({
     url: request.url,
     collection: {
-      id: 'all-products',
+    id: 'all-products',
+    title: 'All Products',
+    handle: 'products',
+    descriptionHtml: 'All the store products',
+    description: 'All the store products',
+    seo: {
       title: 'All Products',
-      handle: 'products',
-      descriptionHtml: 'All the store products',
       description: 'All the store products',
-      seo: {
-        title: 'All Products',
-        description: 'All the store products',
-      },
-      metafields: [],
-      products: data.products,
-      updatedAt: '',
+    },
+    metafields: [],
+    products: data.products,
+    updatedAt: '',
     },
   });
+  
+  const pageContext = {type: 'CATEGORY'};
+  const apiResponse = await choose(request, context, pageContext, []);
 
   return json({
-    products: data.products,
-    seo,
+      products: data.products,
+      pageContext: pageContext,
+      seo,
   });
 }
 

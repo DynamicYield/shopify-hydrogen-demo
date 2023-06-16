@@ -24,6 +24,10 @@ import styles from './styles/app.css';
 import {DEFAULT_LOCALE, parseMenu, getCartId} from './lib/utils';
 import {useAnalytics} from './hooks/useAnalytics';
 
+import {useLocation, useFetcher} from '@remix-run/react';
+import {useEffect} from 'react'
+import {useContextFromLoaders} from '~/dyapi';
+
 export const links = () => {
   return [
     {rel: 'stylesheet', href: styles},
@@ -65,6 +69,19 @@ export default function App() {
   const data = useLoaderData();
   const locale = data.selectedLocale ?? DEFAULT_LOCALE;
   const hasUserConsent = true;
+  
+  const location = useLocation();
+  const fetcher = useFetcher();
+  const pageContext = useContextFromLoaders();
+  
+  useEffect(() => {
+    const { hash, pathname, search } = location;
+    // Send page view to DY. 
+    var locationPageContext = {...{location: hash + pathname + search}, ...pageContext}; // Add current location. 
+    fetcher.submit(locationPageContext, { method: "post", action: "/api/pv" });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location]);
 
   useAnalytics(hasUserConsent, locale);
 
@@ -156,22 +173,22 @@ const LAYOUT_QUERY = `#graphql
     }
   }
   fragment Shop on Shop {
-    id
-    name
-    description
-    primaryDomain {
-      url
-    }
-    brand {
-      logo {
-        image {
-          url
-        }
+      id
+      name
+      description
+      primaryDomain {
+        url
       }
+      brand {
+       logo {
+         image {
+          url
+         }
+       }
+     }
     }
-  }
   fragment MenuItem on MenuItem {
-    id
+      id
     resourceId
     tags
     title
@@ -182,16 +199,16 @@ const LAYOUT_QUERY = `#graphql
     ...MenuItem
   }
   fragment ParentMenuItem on MenuItem {
-    ...MenuItem
-    items {
+        ...MenuItem
+        items {
       ...ChildMenuItem
+      }
     }
-  }
   fragment Menu on Menu {
-    id
-    items {
+      id
+      items {
       ...ParentMenuItem
-    }
+  }
   }
 `;
 
