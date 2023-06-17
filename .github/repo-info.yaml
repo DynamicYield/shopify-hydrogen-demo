@@ -1,0 +1,34 @@
+# The following GitHub teams can be used as owners within this file:
+# affinity
+# analytics
+# architects
+# audiences
+# datafeeds
+# core
+# cse
+# cto
+# data-science
+# devops
+# devsecops
+# dy4dev
+# dy4dev-client
+# fi
+# frontend
+# frontend-latvia
+# messaging
+# messaging-engine
+# noc
+# qa
+# qsr
+# recs
+# ses
+# strategy
+Owner: ses
+# The following environments can be used within this file:
+# production
+# non-production
+#
+# production repository - application/package (or part of) that is deployed in AWS.
+# non-production repository - docs, template, tests, local environment, ci/cd code, etc.
+Environment: production
+# In case you're not sure or need further assistance please reach out to DevOps
