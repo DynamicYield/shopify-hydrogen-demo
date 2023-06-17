@@ -30,5 +30,5 @@ Owner: ses
 #
 # production repository - application/package (or part of) that is deployed in AWS.
 # non-production repository - docs, template, tests, local environment, ci/cd code, etc.
-Environment: production
+Environment: non-production
 # In case you're not sure or need further assistance please reach out to DevOps
