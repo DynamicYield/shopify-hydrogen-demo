@@ -2,15 +2,19 @@ import {useMatches} from '@remix-run/react';
 
 var url = require('url');
 
-const APIKEY = '5df3bb35e299abb8f67ffd5e7239fd228af8a0b1a33c8ed4fb4299e8563734e5';
-const DYHOST = 'https://dy-api.com';
+// API key and API host are taken from the envoronmental variables:
+// DY_API_KEY
+// DY_API_HOST
+// When running locally, they come from the .env file in the project root. 
+// When hosted in Oxygen, they are set in the Shopify configuration. 
+// https://shopify.dev/docs/custom-storefronts/oxygen/storefronts/environment-variables
 
 export async function choose(request, context, pageContext, selectors = [], isImplicitPageview = false) {
-  const uri = `${DYHOST}/v2/serve/user/choose`;
+  const uri = `${context.env.DY_API_HOST}/v2/serve/user/choose`;
   const options = {
     method: 'POST',
     headers: {
-      'DY-API-Key': APIKEY,
+      'DY-API-Key': context.env.DY_API_KEY,
     },
     body: JSON.stringify({
       selector: {
@@ -108,9 +112,9 @@ export async function reportClick(request, context, engagement) {
   try {
     const options = {
       method: 'POST',
-      url: `${DYHOST}/v2/collect/user/engagement`,
+      url: `${context.env.DY_API_HOST}/v2/collect/user/engagement`,
       headers: {
-        'DY-API-Key': APIKEY,
+        'DY-API-Key': context.env.DY_API_KEY,
       },
       body: {
         user: {
@@ -134,9 +138,9 @@ export async function reportEvent(request, context, event) {
   try {
     const options = {
       method: 'POST',
-      url: `${DYHOST}/v2/collect/user/event`,
+      url: `${context.env.DY_API_HOST}/v2/collect/user/event`,
       headers: {
-        'DY-API-Key': APIKEY,
+        'DY-API-Key': context.env.DY_API_KEY,
       },
       body: {
         user: {
