@@ -8,6 +8,13 @@ This demo store is a clone of the `demo-store` template [provided by Shopify](ht
 - [Dynamic Yield v2](https://apps.shopify.com/dynamic-yield-v2) Shopify app
 - Node.js version 16.14.0 or higher
 
+## Configure environmental variables. 
+Add two variables to the .env file in the root of your project:
+- DY_API_KEY="YOUR DY API KEY HERE"
+- DY_API_HOST="https://dy-api.com"
+
+If hosting on Oxygen, these variables can be configured in the [admin interface](https://shopify.dev/docs/custom-storefronts/oxygen/storefronts/environment-variables). 
+
 ## Start the demo store locally
 
 ```bash
