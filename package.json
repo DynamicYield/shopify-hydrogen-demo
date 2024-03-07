@@ -26,7 +26,7 @@
     "cross-env": "^7.0.3",
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
-    "isbot": "^3.6.5",
+    "isbot": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-intersection-observer": "^9.4.1",
