@@ -18,7 +18,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.2",
     "@remix-run/react": "2.8.0",
-    "@shopify/cli": "3.57.0",
+    "@shopify/cli": "3.52.0",
     "@shopify/cli-hydrogen": "^7.0.0",
     "@shopify/hydrogen": "^2024.1.2",
     "@shopify/remix-oxygen": "^2.0.0",
